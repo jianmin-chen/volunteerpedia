@@ -5,5 +5,64 @@
 {% endblock %}
 
 {% block body %}
-    <h2></h2>
+    <a href="{{ url_for('general.index') }}">Go back</a>
+    <h1>{{ opportunity.title }}</h1>
+    <p>Hosted by <b>{{ opportunity.organizer.name }}</b></p>
+    <h2>About the Organizer</h2>
+    <p>{{ opportunity.organizer.description }}</p>
+    <h2>About the Opportunity</h2>
+    <p>{{ opportunity.description }}</p>
+    <p><b>Hours</b>: {{ opportunity.hours }}</p>
+    <p><b>Start date</b>: {{ opportunity.start_date }}</p>
+    <p><b>XP</b>: {{ opportunity.xp }}</p>
+    <p><b>Open</b>: {{ "No" if opportunity.ended else "Yes" }}</p>
+    <p><b># of participants</b>: {{ opportunity.participants | length }}</p>
+    {% if is_organizer %}
+        <h2>For the organizer</h2>
+        {% if opportunity.participants | length %}
+            <table>
+                <thead>
+                    <tr>
+                        <td>Email</td>
+                        <td>Username</td>
+                        <td>End volunteering</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for participant in opportunity.participants %}
+                        <tr>
+                            <td>{{ participant.user.email }}</td>
+                            <td>{{ participant.user.username }}</td>
+                            <td>
+                                <form action="{{ url_for('events.end_individual') }}" methos="post">
+                                    <button type="submit">End volunteering for volunteer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        {% else %}
+            <p>No volunteers yet.</p>
+        {% endif %}
+        {% if not opportunity.ended %}
+            <form action="{{ url_for('events.end') }}" method="post">
+                <input type="hidden" name="id" value="{{ opportunity.id }}"/>
+                <button type="submit">End volunteer sign-ups</button>
+            </form>
+        {% else %}
+            <button disabled>End volunteer sign-ups</button>
+        {% endif %}
+    {% else %}
+        <h2>For the volunteer</h2>
+        {% if joined %}
+            <p>Joined!</p>
+        {% elif not opportunity.ended %}
+            <form action="{{ url_for('events.join') }}" method="post">
+                <input type="hidden" name="id" value="{{ opportunity.id }}"/>
+                <button type="submit">Volunteer for opportunity!</button>
+            </form>
+        {% else %}
+            <p>Submissions have been closed.</p>
+        {% endif %}
+    {% endif %}
 {% endblock %}

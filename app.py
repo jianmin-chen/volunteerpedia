@@ -34,6 +34,7 @@ Session(app)
 
 # Configure custom variables
 app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
+app.config["XP_PER_LEVEL"] = 100
 
 # Configure routes
 app.register_blueprint(events.blueprint)

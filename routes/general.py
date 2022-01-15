@@ -3,7 +3,7 @@ from sqlalchemy import select
 from uuid import uuid4
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from database import db, User, Organization, Event
+from database import db, User, Organization, Event, Participant
 from helpers import logged_in_as_user, logged_in_as_organization, authorize_user, authorize_organization, authorize_both
 
 # Configure blueprint
@@ -14,14 +14,37 @@ blueprint = Blueprint("general", __name__)
 def index():
     """Return sign in page or dashboard depending on whether logged in or not."""
     if logged_in_as_user():
-        return render_template("user-dashboard.html")
+        # Email, username, description, XP, XP to next level, leaderboard, recent opportunities, joined opportunities
+        user = db.session.execute(
+            select(User).where(User.id == session["id"])
+        ).fetchone()[0]
+        opportunities = db.session.execute(
+            select(Event)
+        ).fetchall()
+        leaderboard = db.session.execute(
+            select(User).order_by(User.xp.desc()).limit(15)
+        ).fetchall()
+
+        return render_template(
+            "user-dashboard.html",
+            name=user.username,
+            email=user.email,
+            xp=user.xp,
+            joined_opportunities=user.events,
+            opportunities=opportunities,
+            leaderboard=leaderboard,
+            leaderboard_position=5
+        )
     elif logged_in_as_organization():
         # Name, description, events created sorted by start date, create opportunity
         organization = db.session.execute(
             select(Organization).where(Organization.id == session["id"])
         ).fetchone()[0]
+        events = db.session.execute(
+            select(Event).where(Event.organization_id == session["id"]).order_by(Event.start_date.desc())
+        ).fetchall()
 
-        return render_template("organization-dashboard.html", name=organization.name, description=organization.description, events=organization.events)
+        return render_template("organization-dashboard.html", name=organization.name, description=organization.description, events=events)
 
     # Not logged in at all
     return redirect("/signin")

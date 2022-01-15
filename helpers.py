@@ -86,7 +86,7 @@ def authorize_both(f):
     """Authorize function that makes sure either a user or organization is logged in before they can access a view."""
     @wraps(f)
     def decorate(*args, **kwargs):
-        if not logged_in_as_user() or not logged_in_as_organization():
+        if not logged_in_as_user() and not logged_in_as_organization():
             flash("Oops, looks like you need to log in first!")
             return redirect("/signin")
 

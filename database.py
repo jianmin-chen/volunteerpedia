@@ -11,9 +11,9 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False, unique=True)
     email = db.Column(db.String(64), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    xp = db.Column(db.Integer, nullable=False)
+    xp = db.Column(db.Integer, default=0, nullable=False)
 
-    events = db.relationship("Participants", back_populates="user")
+    events = db.relationship("Participant", back_populates="user")
 
 class Organization(db.Model):
     __tablename__ = "organizations"
@@ -22,7 +22,7 @@ class Organization(db.Model):
     description = db.Column(db.String(512), nullable=False)
     password = db.Column(db.String, nullable=False)
 
-    events = db.relationship("Event", back_populates="organization")
+    events = db.relationship("Event", back_populates="organizer")
 
 class Event(db.Model):
     __tablename__ = "events"
@@ -35,14 +35,15 @@ class Event(db.Model):
     ended = db.Column(db.Boolean, default=False, nullable=False)
     organization_id = db.Column(db.String, db.ForeignKey("organizations.id"), nullable=False)
 
-    organization = db.relationship("Organization", back_populates="events")
-    participants = db.relationship("Participants", back_populates="event")
+    organizer = db.relationship("Organization", back_populates="events")
+    participants = db.relationship("Participant", back_populates="event")
 
-class Participants(db.Model):
+class Participant(db.Model):
     __tablename__ = "participants"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String, db.ForeignKey("users.id"), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey("events.id"), nullable=False)
+    xp_given = db.Column(db.Boolean, default=False, nullable=False)
 
     event = db.relationship("Event", back_populates="participants")
     user = db.relationship("User", back_populates="events")
