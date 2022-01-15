@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block body %}
+    <form action="{{ url_for('general.signin') }}" method="post">
+        <input autocomplete="off" name="type" type="hidden" value="user"/>
+        <input autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
+        <input autocomplete="off" name="password" type="password" placeholder="*****" required/>
+        <button type="submit">Sign in as user</button>
+    </form>
+    <form action="{{ url_for('general.signin' )}}" method="post">
+        <input autocomplete="off" name="type" type="hidden" value="organization"/>
+        <input autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
+        <input autocomplete="off" name="password" type="password" placeholder="Access password..." required/>
+        <button type="submit">Sign in as organization</button>
+    </form>
+    <a href="{{ url_for('general.signup') }}">Or sign up</a>
+{% endblock %}

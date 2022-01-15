@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    User Dashboard
+{% endblock %}
+
+{% block body %}
+    <p>Logged in as user</p>
+    <a href="{{ url_for('general.signout') }}">Sign out</a>
+{% endblock %}
