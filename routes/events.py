@@ -29,7 +29,7 @@ def opportunity(id):
         # Organizer gets certain priveleges
         is_organizer = True
     else:
-        # Check to see if use has already joined opportunity
+        # Check to see if user has already joined opportunity
         query = db.session.execute(
             select(Participant).where(
                 (Participant.user_id == session["id"]) &
@@ -56,7 +56,7 @@ def create():
         flash("Some fields weren't filled out! Try again.")
         return redirect("/")
 
-    hours = int(hours)
+    hours = float(hours)
     start = date(*[int(i) for i in start.split("-")])
 
     # Create opportunity
@@ -88,6 +88,17 @@ def join():
         flash("That opportunity couldn't be found!")
         return redirect(request.referrer)
 
+    # Make sure that user isn't already part of event
+    query = db.session.execute(
+        select(Participant).where(
+            (Participant.user_id == session["id"]) &
+            (Participant.event_id == id)
+        )
+    ).fetchone()
+    if query:
+        flash("You've already joined!")
+        return redirect(request.referrer)
+
     # Add user as participant
     participant = Participant(
         user_id=session["id"],
@@ -116,6 +127,9 @@ def end():
     if not event:
         flash("That opportunity couldn't be found!")
         return redirect(request.referrer)
+    elif event[0].organization_id != session["id"]:
+        flash("Sorry, you're not allowed to end that volunteer opportunity!")
+        return redirect(request.referrer)
 
     # End openings
     event[0].ended = True
@@ -128,4 +142,41 @@ def end():
 @blueprint.route("/end_individual", methods=["POST"])
 @authorize_organization
 def end_individual():
+    """End an individual's volunteering and give them their XP and hours."""
+    opportunity_id = request.form.get("opportunity_id")
+    user_id = request.form.get("user_id")
+
+    if not opportunity_id or not user_id:
+        flash("There was an issue! Try again.")
+        return redirect(request.referrer)
+
+    # Make sure user exists
+    user = db.session.execute(
+        select(User).where(User.id == user_id)
+    ).fetchone()
+    if not user:
+        flash("There was an issue! Try again.")
+        return redirect(request.referrer)
+
+    # Make sure that event exists, that organization can access event, and that user is part of event
+    query = db.session.execute(
+        select(Participant).where(
+            (Participant.user_id == user_id) &
+            (Participant.event_id == opportunity_id)
+        )
+    ).fetchone()
+    if not query:
+        flash("There was an issue! Try again.")
+        return redirect(request.referrer)
+    elif query[0].event.organization_id != session["id"]:
+        flash("There was an issue! Try again.")
+        return redirect(request.referrer)
+
+    query[0].user.xp += query[0].event.xp
+    query[0].user.hours += query[0].event.hours
+    query[0].xp_given = True
+
+    db.session.add(query[0])
+    db.session.commit()
+
     return redirect(request.referrer)

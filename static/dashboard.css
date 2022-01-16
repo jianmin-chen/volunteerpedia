@@ -5,7 +5,11 @@ body {
 .xp-badge{
     background: url("/static/badge.svg");
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     color: white;
     width: 250px; height: 250px;
+}
+
+.xp-badge .display-3 {
+    font-family: "Inter", sans-serif;
 }

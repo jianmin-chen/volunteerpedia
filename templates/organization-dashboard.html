@@ -19,6 +19,15 @@
 
 {% block body %}
     <div class="g-3 py-4 row h-100">
+        {% if get_flashed_messages() %}
+            <div class="mx-4 my-3 position-fixed bottom-0 end-0 show toast">
+                <div class="toast-header" role="alert">
+                    <strong class="me-auto">Alert</strong>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="toast" type="button"></button>
+                </div>
+                <div class="toast-body">{{ get_flashed_messages() | join(" ") }}</div>
+            </div>
+        {% endif %}
         <div class="col-lg-6">
             <div class="bg-white border mb-2 p-4">
                 <h2>About {{ name }}</h2>
@@ -31,7 +40,6 @@
                     <textarea rows="10" class="form-control mb-1" autocomplete="off" name="description" placeholder="Opportunity description" required></textarea>
                     <input class="form-control mb-1" pattern="[0-9.]+" type="text" placeholder="# of hours..." autocomplete="off" name="hours" required/>
                     <input class="form-control mb-1" name="start" type="date" placeholder="Start date..." required/>
-                    <input class="form-control mb-1" pattern="[0-9]{1,3}" type="text" placeholder="1 - 100XP" autocomplete="off" name="xp" required/>
                     <button class="btn btn-success d-block w-100" type="submit">Create opportunity</button>
                 </form>
             </div>

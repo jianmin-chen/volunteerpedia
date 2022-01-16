@@ -11,7 +11,8 @@ class User(db.Model):
     username = db.Column(db.String(64), nullable=False, unique=True)
     email = db.Column(db.String(64), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    xp = db.Column(db.Integer, default=0, nullable=False)
+    xp = db.Column(db.Float, default=0, nullable=False)
+    hours = db.Column(db.Float, default=0, nullable=False)
 
     events = db.relationship("Participant", back_populates="user")
 
@@ -29,9 +30,9 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), nullable=False)
     description = db.Column(db.String(512), nullable=False)
-    hours = db.Column(db.SmallInteger, nullable=False)
+    hours = db.Column(db.Float, nullable=False)
     start_date = db.Column(db.Date, default=datetime.utcnow(), nullable=False)
-    xp = db.Column(db.SmallInteger, nullable=False)
+    xp = db.Column(db.Float, nullable=False)
     ended = db.Column(db.Boolean, default=False, nullable=False)
     organization_id = db.Column(db.String, db.ForeignKey("organizations.id"), nullable=False)
 

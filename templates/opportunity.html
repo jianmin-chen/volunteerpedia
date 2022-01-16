@@ -10,15 +10,21 @@
 
 {% block navbar %}
     <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('general.index') }}">{{ name }}</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link" href="{{ url_for('general.signout') }}">Sign Out</a>
     </li>
 {% endblock %}
 
 {% block body %}
     <div class="align-items-center justify-content-center row h-100">
+        {% if get_flashed_messages() %}
+            <div class="mx-4 my-3 position-fixed bottom-0 end-0 show toast">
+                <div class="toast-header" role="alert">
+                    <strong class="me-auto">Alert</strong>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="toast" type="button"></button>
+                </div>
+                <div class="toast-body">{{ get_flashed_messages() | join(" ") }}</div>
+            </div>
+        {% endif %}
         <div class="col-lg-8 py-5">
             <div class="bg-white border mb-2 p-4 row">
                 <p><a href="{{ url_for('general.index') }}">Go back</a></p>
@@ -52,9 +58,15 @@
                                         <td>{{ participant.user.email }}</td>
                                         <td>{{ participant.user.username }}</td>
                                         <td>
-                                            <form action="{{ url_for('events.end_individual') }}" method="post">
-                                                <button class="btn btn-link p-0 align-top" type="submit">End volunteering for volunteer</button>
-                                            </form>
+                                            {% if not participant.xp_given %}
+                                                <form action="{{ url_for('events.end_individual') }}" method="post">
+                                                    <input type="hidden" name="opportunity_id" value="{{ opportunity.id }}"/>
+                                                    <input type="hidden" name="user_id" value="{{ participant.user_id }}"/>
+                                                    <button class="btn btn-link p-0 align-top" type="submit">End volunteering for volunteer</button>
+                                                </form>
+                                            {% else %}
+                                                Opportunity has been ended for this volunteer.
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -66,7 +78,7 @@
                     {% if not opportunity.ended %}
                         <form action="{{ url_for('events.end') }}" method="post">
                             <input type="hidden" name="id" value="{{ opportunity.id }}"/>
-                            <button type="submit">End volunteer sign-ups</button>
+                            <button class="btn btn-success" type="submit">End volunteer sign-ups</button>
                         </form>
                     {% else %}
                         <button class="btn btn-success" disabled>Volunteer sign-ups ended</button>
@@ -78,7 +90,7 @@
                     {% elif not opportunity.ended %}
                         <form action="{{ url_for('events.join') }}" method="post">
                             <input type="hidden" name="id" value="{{ opportunity.id }}"/>
-                            <button type="submit">Volunteer for opportunity!</button>
+                            <button class="btn btn-success" type="submit">Volunteer for opportunity!</button>
                         </form>
                     {% else %}
                         <p>Submissions have been closed.</p>

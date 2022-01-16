@@ -1,5 +1,5 @@
 from flask import Blueprint, current_app, flash, redirect, render_template, request, session
-from sqlalchemy import select
+from sqlalchemy import func, select
 from uuid import uuid4
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -19,21 +19,31 @@ def index():
             select(User).where(User.id == session["id"])
         ).fetchone()[0]
         opportunities = db.session.execute(
-            select(Event)
+            select(Event).order_by(Event.start_date.desc())
         ).fetchall()
+
         leaderboard = db.session.execute(
-            select(User).order_by(User.xp.desc()).limit(15)
+            select(User).where(User.hours > user.hours).order_by(User.hours.desc())
         ).fetchall()
+        if len(leaderboard) <= 15:
+            # User is in top 15
+            leaderboard = db.session.execute(
+                select(User).order_by(User.hours.desc()).limit(15)
+            ).fetchall()
+            leaderboard_position = None
+        else:
+            leaderboard_position = len(leaderboard) + 1
 
         return render_template(
             "user-dashboard.html",
             name=user.username,
             email=user.email,
             xp=user.xp,
+            hours=user.hours,
             joined_opportunities=user.events,
             opportunities=opportunities,
-            leaderboard=leaderboard,
-            leaderboard_position=5
+            leaderboard=leaderboard[:15],
+            leaderboard_position=leaderboard_position
         )
     elif logged_in_as_organization():
         # Name, description, events created sorted by start date, create opportunity

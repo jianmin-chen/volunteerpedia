@@ -40,7 +40,7 @@ app.config["XP_PER_HOUR"] = 100
 # Configure custom context processors
 @app.context_processor
 def context_processor():
-    return {"sqrt": sqrt}
+    return {"enumerate": enumerate}
 
 # Configure routes
 app.register_blueprint(events.blueprint)
