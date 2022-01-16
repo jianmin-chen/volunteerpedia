@@ -4,18 +4,79 @@
     Sign In
 {% endblock %}
 
+{% block resources %}
+    <link href="{{ url_for('static', filename='login.css') }}" rel="stylesheet"/>
+    <script>
+        /*
+        function changeEvent() {
+            var dropDown = document.getElementById("dropDown").value;
+
+            if(document.getElementById("selectBox").value == "one"){
+                document.getElementById("usernameLab").value = "Username";
+            } else if(document.getElementById("selectBox").value == "two"){
+                document.getElementById("usernameLab").value = "Organization Name";
+            }
+
+
+          }
+          */
+    </script>
+{% endblock %}
+
 {% block body %}
-    <form action="{{ url_for('general.signin') }}" method="post">
-        <input autocomplete="off" name="type" type="hidden" value="user"/>
-        <input autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
-        <input autocomplete="off" name="password" type="password" placeholder="*****" required/>
-        <button type="submit">Sign in as user</button>
-    </form>
-    <form action="{{ url_for('general.signin' )}}" method="post">
-        <input autocomplete="off" name="type" type="hidden" value="organization"/>
-        <input autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
-        <input autocomplete="off" name="password" type="password" placeholder="Access password..." required/>
-        <button type="submit">Sign in as organization</button>
-    </form>
-    <a href="{{ url_for('general.signup') }}">Or sign up</a>
+    <div class="login-wrap">
+                <div class="login-html">
+                    <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+                    <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+                    <div class="login-form">
+                        <div class="sign-in-htm">
+                            <form class="{{ url_for('general.signin') }}" method="post">
+                                <input autocomplete="off" name="type" type="hidden" value="user"/>
+                                <div class="group">
+                                    <input class="input" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
+                                </div>
+                                <div class="group">
+                                    <input class="input" autocomplete="off" name="password" type="password" placeholder="*****" required/>
+                                </div>
+                                <div class="group">
+                                    <button class="button" type="submit">Sign in as user</button>
+                                </div>
+                            </form>
+                            <div class="hr"></div>
+                            <form action="{{ url_for('general.signin' )}}" method="post">
+                                <input autocomplete="off" name="type" type="hidden" value="organization"/>
+                                <div class="group">
+                                    <input class="input" autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
+                                </div>
+                                <div class="group">
+                                    <input class="input" autocomplete="off" name="password" type="password" placeholder="Access password..." required/>
+                                </div>
+                                <div class="group">
+                                    <button class="button" type="submit">Sign in as organization</button>
+                                </div>
+                            </form>
+
+                        <!--Sign Up menu-->
+                            <form action="{{ url_for('general.signup' ) }}" method="post">
+                                <form action="{{ url_for('general.signup') }}" method="post">
+                                    <input class="input" autocomplete="off" name="type" type="hidden" value="user"/>
+                                    <div class="group">
+                                        <input class="input" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
+                                    </div>
+                                    <div class="group">
+                                        <input class="input" autocomplete="off" name="username" type="text" maxlength="64" placeholder="Jogn Doe" required/>
+                                    </div>
+                                    <div class="group">
+                                        <input class="input" autocomplete="off" name="password" type="password" placeholder="*****" required/>
+                                    </div>
+                                    <div class="group">
+                                        <button type="submit">Sign up as user</button>
+                                    </div>
+                                </form>
+                            </form>
+                            <div class="hr"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 {% endblock %}
