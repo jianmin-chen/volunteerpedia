@@ -24,11 +24,11 @@
                 <form class="col-lg-6 border-right p-3" action="{{ url_for('general.signin') }}" method="post">
                     <h1 class="mb-3">Sign in as user</h1>
                     <div class="form-floating mb-1">
-                        <input maxlength="64" value="johndoe@gmail.com" id="user-email" class="form-control" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
+                        <input maxlength="64" id="user-email" class="form-control" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
                         <label for="user-email">Email address</label>
                     </div>
                     <div class="form-floating mb-1">
-                        <input value="blue" id="user-password" class="form-control" autocomplete="off" name="password" type="password" placeholder="*****" required/>
+                        <input id="user-password" class="form-control" autocomplete="off" name="password" type="password" placeholder="*****" required/>
                         <label for="user-password">Password</label>
                     </div>
                     <input autocomplete="off" name="type" type="hidden" value="user"/>
