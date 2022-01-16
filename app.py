@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_session import Session
+from math import sqrt
 from os import environ
 
 from database import db
@@ -34,7 +35,12 @@ Session(app)
 
 # Configure custom variables
 app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
-app.config["XP_PER_LEVEL"] = 100
+app.config["XP_PER_HOUR"] = 100
+
+# Configure custom context processors
+@app.context_processor
+def context_processor():
+    return {"sqrt": sqrt}
 
 # Configure routes
 app.register_blueprint(events.blueprint)

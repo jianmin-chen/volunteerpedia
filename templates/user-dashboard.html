@@ -4,39 +4,115 @@
     User Dashboard
 {% endblock %}
 
+{% block styles %}
+    <link href="{{ url_for('static', filename='dashboard.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="#">{{ name }}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('general.signout') }}">Sign Out</a>
+    </li>
+{% endblock %}
+
 {% block body %}
-    <p>{{ name }}</p>
-    <p>{{ email }}</p>
-    <a href="{{ url_for('general.signout') }}">Sign out</a>
-    <p>{{ xp }} XP</p>
-    <p>Level {{ xp // 100 }}</p>
-    <p>About {{ xp + 1 % 100 }} to next level</p>
-    <h2>My Opportunities</h2>
-    {% if joined_opportunities %}
-        {% for event in joined_opportunities %}
-            <h2>{{ event.event.title }}</h2>
-            <p>{{ event.event.description[:100] }}...</p>
-            <p><b>Hours</b>: {{ event.event.hours }}</p>
-            <p><b>Start date</b>: {{ event.event.start_date }}</p>
-            <p><b>XP</b>: {{ event.event.xp }}</p>
-            <p><b>Open</b>: {{ "No" if event.event.ended else "Yes" }}</p>
-            <p><b># of participants</b>: {{ event.event.participants | length }}</p>
-            <a href="{{ url_for('events.opportunity', id=event.event.id) }}">View</a>
-        {% endfor %}
-    {% endif %}
-    <h2>Recent Opportunities</h2>
-    {% if opportunities %}
-        {% for event in opportunities %}
-            <h2>{{ event[0].title }}</h2>
-            <p>{{ event[0].description[:100] }}...</p>
-            <p><b>Hours</b>: {{ event[0].hours }}</p>
-            <p><b>Start date</b>: {{ event[0].start_date }}</p>
-            <p><b>XP</b>: {{ event[0].xp }}</p>
-            <p><b>Open</b>: {{ "No" if event[0].ended else "Yes" }}</p>
-            <p><b># of participants</b>: {{ event[0].participants | length }}</p>
-            <a href="{{ url_for('events.opportunity', id=event[0].id) }}">View</a>
-        {% endfor %}
-    {% else %}
-        <p>No opportunities found.</p>
-    {% endif %}
+<div class="g-3 py-4 row h-100">
+    <div class="col-lg-6">
+        <div class="bg-white border mb-2 p-4">
+            <p>{{ email }}</p>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="xp-badge">{{ xp }} XP</p>
+                </div>
+                <div class="col-lg-6">
+                    <img class="w-100" src="{{ url_for('static', filename='footprints.png') }}"/>
+                </div>
+            </div>
+            <p class="mb-1">Level {{ xp  }}</p>
+            <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ (config.XP_PER_HOUR * sqrt(xp)) }} more XP to level 1</div>
+            </div>
+        </div>
+        <div class="bg-white border mb-2 p-4">
+            <h1>Leaderboard</h1>
+            <p>Keep going!</p>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Username</td>
+                        <td>XP</td>
+                        <td>Level</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1</td>
+                        <td>Harry</td>
+                        <td>125</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>#2</td>
+                        <td>Blanj</td>
+                        <td>15</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>#15</td>
+                        <td><i>Jianmin Chen</i></td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="bg-white border mb-2 p-4">
+            <h2>I'm volunteering at...</h2>
+            {% if joined_opportunities %}
+                {% for event in joined_opportunities %}
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <h2>{{ event.event.title }}</h2>
+                            <p>{{ event.event.description[:100] }}...</p>
+                            <p class="badge bg-primary"><b>Hours</b>: {{ event.event.hours }}</p>
+                            <p class="badge bg-primary"><b>Start date</b>: {{ event.event.start_date }}</p>
+                            <p class="badge bg-success"><b>XP</b>: {{ event.event.xp }}</p>
+                            <p class="badge bg-info"><b>Open</b>: {{ "No" if event.event.ended else "Yes" }}</p>
+                            <p class="badge bg-dark"><b># of participants</b>: {{ event.event.participants | length }}</p>
+                            <p><a href="{{ url_for('events.opportunity', id=event.event.id) }}">View</a></p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You haven't joined any opportunities yet. Join a service, start volunteering, and level up!</p>
+            {% endif %}
+        </div>
+        <div class="bg-white border mb-2 p-4">
+            <h2>Recent Opportunities</h2>
+            {% if opportunities %}
+                {% for event in opportunities %}
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h2>{{ event[0].title }}</h2>
+                        <p>{{ event[0].description }}</p>
+                        <p class="badge bg-primary"><b>Hours</b>: {{ event[0].hours }}</p>
+                        <p class="badge bg-primary"><b>XP</b>: {{ event[0].xp }}</p>
+                        <p class="badge bg-success"><b>Start date</b>: {{ event[0].start_date }}</p>
+                        <p class="badge bg-info"><b>Open</b>: {{ "No" if event[0].ended else "Yes" }}</p>
+                        <p class="badge bg-dark"><b># of participants</b>: {{ event[0].participants | length }}</p>
+                        <p><a href="{{ url_for('events.opportunity', id=event[0].id) }}">View</a></p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No opportunities found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

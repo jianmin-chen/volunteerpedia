@@ -65,7 +65,7 @@ def create():
         description=description,
         hours=hours,
         start_date=start,
-        xp=hours * current_app.config["XP_PER_LEVEL"],
+        xp=hours * current_app.config["XP_PER_HOUR"],
         organization_id=session["id"]
     )
     db.session.add(opportunity)

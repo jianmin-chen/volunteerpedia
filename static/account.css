@@ -1,0 +1,17 @@
+body > .container-fluid {
+  background-image: url("/static/wave.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.border-right {
+    border-right: 1px solid var(--bs-gray-300);
+}
+
+.navbar {
+    border: none;
+}
+
+.alert {
+    border-radius: 0 !important;
+}

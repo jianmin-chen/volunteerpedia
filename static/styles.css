@@ -1,4 +1,59 @@
-/*
- If using Bootstrap, needs to be imported in ./templates/layout.html.
- If creating a stylesheet, just do it in the same folder as this one. You can use @import.
- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=EB+Garamond&display=swap');
+
+:root {
+    --main-theme-color: rgb(26, 137, 23);
+}
+
+body, html {
+    font-family: "Inter", sans-serif;
+    min-height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "EB Garamond", serif;
+}
+
+.navbar {
+    /* Set up styles for menu (navbar) */
+    line-height: 2rem;
+}
+.navbar-brand span {
+    color: var(--main-theme-color);
+    font-family: "EB Garamond", serif;
+    font-weight: 800;
+    font-size: 2rem !important;
+}
+@media screen and (min-width: 991.98px) {
+    .navbar .navbar-brand {
+        font-size: 1.25rem !important;
+        padding-top: 0 !important;
+    }
+}
+.navbar .navbar-toggler {
+    border: none;
+}
+.navbar .nav-link {
+    color: var(--main-theme-color) !important;
+}
+.navbar-brand img {
+    width: 30px;
+}
+.navbar-toggler {
+    box-shadow: none !important;
+}
+
+input, button, textarea {
+    border-radius: 0 !important;
+}
+input:focus, textarea:focus, button:focus {
+    box-shadow: none !important;
+    border-color: var(--main-theme-color) !important;
+}
+
+textarea {
+    resize: none;
+}
+
+.btn-link, .btn-link:hover, .btn-link:active, .btn-link:focus {
+    border: none;
+}
