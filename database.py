@@ -8,8 +8,8 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.String, primary_key=True)
-    username = db.Column(db.String(64), nullable=False, unique=True)
-    email = db.Column(db.String(64), nullable=False, unique=True)
+    username = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     xp = db.Column(db.Float, default=0, nullable=False)
     hours = db.Column(db.Float, default=0, nullable=False)
@@ -20,7 +20,7 @@ class Organization(db.Model):
     __tablename__ = "organizations"
     id = db.Column(db.String, primary_key=True)
     name = db.Column(db.String, nullable=False, unique=True)
-    description = db.Column(db.String(512), nullable=False)
+    description = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
 
     events = db.relationship("Event", back_populates="organizer")
@@ -28,8 +28,8 @@ class Organization(db.Model):
 class Event(db.Model):
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), nullable=False)
-    description = db.Column(db.String(512), nullable=False)
+    title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
     hours = db.Column(db.Float, nullable=False)
     start_date = db.Column(db.Date, default=datetime.utcnow(), nullable=False)
     xp = db.Column(db.Float, nullable=False)

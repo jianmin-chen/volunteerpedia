@@ -24,7 +24,7 @@
                 <form class="col-lg-6 border-right p-3" action="{{ url_for('general.signin') }}" method="post">
                     <h1 class="mb-3">Sign in as user</h1>
                     <div class="form-floating mb-1">
-                        <input maxlength="64" id="user-email" class="form-control" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
+                        <input id="user-email" class="form-control" autocomplete="off" name="email" type="email" placeholder="johndoe@domain.com" required/>
                         <label for="user-email">Email address</label>
                     </div>
                     <div class="form-floating mb-1">
@@ -38,7 +38,7 @@
                     <h1 class="mb-3">Sign in as organization</h1>
                     <input autocomplete="off" name="type" type="hidden" value="organization"/>
                     <div class="form-floating mb-1">
-                        <input maxlength="64" id="organization-name" class="form-control" autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
+                        <input id="organization-name" class="form-control" autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
                         <label for="organization-name">Organization name</label>
                     </div>
                     <div class="form-floating mb-1">
