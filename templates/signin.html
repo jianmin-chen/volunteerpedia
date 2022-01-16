@@ -26,9 +26,13 @@
 {% block body %}
     <div class="login-wrap">
                 <div class="login-html">
+                    {% if get_flashed_messages() %}
+                        <p style='color: white;'>{{ get_flashed_messages() | join(" ") }}</p>
+                    {% endif %}
                     <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
                     <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
                     <div class="login-form">
+
                         <div class="sign-in-htm">
                             <form class="{{ url_for('general.signin') }}" method="post">
                                 <input autocomplete="off" name="type" type="hidden" value="user"/>
@@ -55,8 +59,10 @@
                                     <button class="button" type="submit">Sign in as organization</button>
                                 </div>
                             </form>
+                        </div>
 
                         <!--Sign Up menu-->
+                         <div class="sign-up-htm">
                             <form action="{{ url_for('general.signup' ) }}" method="post">
                                 <form action="{{ url_for('general.signup') }}" method="post">
                                     <input class="input" autocomplete="off" name="type" type="hidden" value="user"/>
@@ -64,17 +70,27 @@
                                         <input class="input" autocomplete="off" name="email" type="email" maxlength="64" placeholder="johndoe@domain.com" required/>
                                     </div>
                                     <div class="group">
-                                        <input class="input" autocomplete="off" name="username" type="text" maxlength="64" placeholder="Jogn Doe" required/>
+                                        <input class="input" autocomplete="off" name="username" type="text" maxlength="64" placeholder="John Doe" required/>
                                     </div>
                                     <div class="group">
                                         <input class="input" autocomplete="off" name="password" type="password" placeholder="*****" required/>
                                     </div>
                                     <div class="group">
-                                        <button type="submit">Sign up as user</button>
+                                        <button class="button" type="submit">Sign up as user</button>
                                     </div>
                                 </form>
                             </form>
                             <div class="hr"></div>
+                            <!-- CHANGE HERE -->
+                            <form action="{{ url_for('general.signup' )}}" method="post">
+                                <div class="group">
+                                    <input class="input" autcomplete="off" name="type" type="hidden" value="organization"/>
+                                    <input class="input" autocomplete="off" name="name" type="text" placeholder="What's the name of your organization?" required/>
+                                    <textarea autocomplete="off" name="description" placeholder="What does your organization do?" required></textarea>
+                                    <input class="input" autocomplete="off" name="password" type="password" placeholder="Access password..." required/>
+                                    <button class="button" type="submit">Sign up as organization</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

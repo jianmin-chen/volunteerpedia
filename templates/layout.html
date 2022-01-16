@@ -10,9 +10,6 @@
         {% block resources %}{% endblock %}
     </head>
     <body>
-        {% if get_flashed_messages() %}
-            <p>{{ get_flashed_messages() | join(" ") }}</p>
-        {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>
