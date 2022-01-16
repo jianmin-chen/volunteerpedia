@@ -19,7 +19,7 @@ class User(db.Model):
 class Organization(db.Model):
     __tablename__ = "organizations"
     id = db.Column(db.String, primary_key=True)
-    name = db.Column(db.String(64), nullable=False, unique=True)
+    name = db.Column(db.String, nullable=False, unique=True)
     description = db.Column(db.String(512), nullable=False)
     password = db.Column(db.String, nullable=False)
 
